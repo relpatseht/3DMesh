@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="API">
+      <UniqueIdentifier>{07c3b618-a119-4e67-8d55-cb5cb6876d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{1c07ec1c-de15-46ac-ac40-60849e1c3424}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="3.3.2\include\GLFW\glfw3.h">
+      <Filter>API</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\include\GLFW\glfw3native.h">
+      <Filter>API</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\src\internal.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\src\mappings.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\src\wgl_context.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\src\win32_joystick.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\src\win32_platform.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3.3.2\src\init.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\input.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\monitor.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\wgl_context.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\win32_init.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\win32_joystick.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\win32_monitor.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\win32_thread.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\win32_time.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\win32_window.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\window.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

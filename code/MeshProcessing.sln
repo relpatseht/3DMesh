@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshProcessing", "MeshProcessing\MeshProcessing.vcxproj", "{5CAE8025-4A75-43AF-B82A-9452D00DC90A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{5C6A1F35-97BF-466F-BAE4-B5EE839370FC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eigen", "external\eigen\Eigen.vcxproj", "{5CAE8025-4A75-43AF-B82A-9452D00DC90B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "external\glfw\GLFW.vcxproj", "{5CAE8025-4A75-43AF-B82A-9452D00DC90C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "external\imgui\ImGui.vcxproj", "{5CAE8025-4A75-43AF-B82A-9452D00DC90D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Viewer", "Viewer\Viewer.vcxproj", "{5CAE8025-4A75-43AF-B82A-9452D00DC90E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "external\glad\glad.vcxproj", "{5CAE8025-4A75-43AF-B82A-9452D00DC90F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90A}.Debug|x64.ActiveCfg = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90A}.Debug|x64.Build.0 = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90A}.Release|x64.ActiveCfg = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90A}.Release|x64.Build.0 = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90B}.Debug|x64.ActiveCfg = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90B}.Debug|x64.Build.0 = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90B}.Release|x64.ActiveCfg = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90B}.Release|x64.Build.0 = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90C}.Debug|x64.ActiveCfg = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90C}.Debug|x64.Build.0 = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90C}.Release|x64.ActiveCfg = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90C}.Release|x64.Build.0 = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90D}.Debug|x64.ActiveCfg = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90D}.Debug|x64.Build.0 = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90D}.Release|x64.ActiveCfg = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90D}.Release|x64.Build.0 = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90E}.Debug|x64.ActiveCfg = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90E}.Debug|x64.Build.0 = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90E}.Release|x64.ActiveCfg = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90E}.Release|x64.Build.0 = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90F}.Debug|x64.ActiveCfg = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90F}.Debug|x64.Build.0 = Debug|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90F}.Release|x64.ActiveCfg = Release|x64
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90F}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90B} = {5C6A1F35-97BF-466F-BAE4-B5EE839370FC}
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90C} = {5C6A1F35-97BF-466F-BAE4-B5EE839370FC}
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90D} = {5C6A1F35-97BF-466F-BAE4-B5EE839370FC}
+		{5CAE8025-4A75-43AF-B82A-9452D00DC90F} = {5C6A1F35-97BF-466F-BAE4-B5EE839370FC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A87D075-A6F0-48BB-A2EB-0C28E0F40CB7}
+	EndGlobalSection
+EndGlobal
