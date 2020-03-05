@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <cassert>
-#include "HalfEdge.h"
+#include "MeshProc/HalfEdge.h"
 
 namespace mesh
 {

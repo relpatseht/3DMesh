@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <cassert>
-#include "TriEdge.h"
+#include "MeshProc/TriEdge.h"
 
 namespace mesh
 {

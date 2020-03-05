@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HalfEdge.h" />
+    <ClInclude Include="MeshProc\HalfEdge.h" />
     <ClInclude Include="MeshProc\Mesh.h" />
-    <ClInclude Include="TriEdge.h" />
+    <ClInclude Include="MeshProc\TriEdge.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HalfEdge.cpp" />

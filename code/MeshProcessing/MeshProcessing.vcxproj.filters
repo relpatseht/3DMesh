@@ -15,10 +15,10 @@
     <ClInclude Include="MeshProc\Mesh.h">
       <Filter>API</Filter>
     </ClInclude>
-    <ClInclude Include="HalfEdge.h">
+    <ClInclude Include="MeshProc\HalfEdge.h">
       <Filter>API\Topologies</Filter>
     </ClInclude>
-    <ClInclude Include="TriEdge.h">
+    <ClInclude Include="MeshProc\TriEdge.h">
       <Filter>API\Topologies</Filter>
     </ClInclude>
   </ItemGroup>
