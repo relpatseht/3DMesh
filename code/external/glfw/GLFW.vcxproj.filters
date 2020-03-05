@@ -30,6 +30,12 @@
     <ClInclude Include="3.3.2\src\win32_platform.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="3.3.2\src\egl_context.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="3.3.2\src\osmesa_context.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3.3.2\src\init.c">
@@ -63,6 +69,18 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="3.3.2\src\window.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\context.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\egl_context.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\vulkan.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="3.3.2\src\osmesa_context.c">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

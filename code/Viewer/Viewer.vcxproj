@@ -79,9 +79,6 @@
     <ProjectReference Include="..\external\imgui\ImGui.vcxproj">
       <Project>{5cae8025-4a75-43af-b82a-9452d00dc90d}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\MeshProcessing\MeshProcessing.vcxproj">
-      <Project>{5cae8025-4a75-43af-b82a-9452d00dc90a}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

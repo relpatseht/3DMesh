@@ -72,16 +72,22 @@
   <ItemGroup>
     <ClInclude Include="3.3.2\include\GLFW\glfw3.h" />
     <ClInclude Include="3.3.2\include\GLFW\glfw3native.h" />
+    <ClInclude Include="3.3.2\src\egl_context.h" />
     <ClInclude Include="3.3.2\src\internal.h" />
     <ClInclude Include="3.3.2\src\mappings.h" />
+    <ClInclude Include="3.3.2\src\osmesa_context.h" />
     <ClInclude Include="3.3.2\src\wgl_context.h" />
     <ClInclude Include="3.3.2\src\win32_joystick.h" />
     <ClInclude Include="3.3.2\src\win32_platform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="3.3.2\src\context.c" />
+    <ClCompile Include="3.3.2\src\egl_context.c" />
     <ClCompile Include="3.3.2\src\init.c" />
     <ClCompile Include="3.3.2\src\input.c" />
     <ClCompile Include="3.3.2\src\monitor.c" />
+    <ClCompile Include="3.3.2\src\osmesa_context.c" />
+    <ClCompile Include="3.3.2\src\vulkan.c" />
     <ClCompile Include="3.3.2\src\wgl_context.c" />
     <ClCompile Include="3.3.2\src\win32_init.c" />
     <ClCompile Include="3.3.2\src\win32_joystick.c" />
