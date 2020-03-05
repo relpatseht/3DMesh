@@ -134,6 +134,8 @@ namespace mesh
 			}
 		}
 
+		// TODO: Split singularities
+
 		outMesh->vertEdges = std::move(outVertEdges);
 		outMesh->verts = std::move(outVerts);
 
