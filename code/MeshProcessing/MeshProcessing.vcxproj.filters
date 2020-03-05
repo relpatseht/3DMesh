@@ -7,5 +7,30 @@
     <Filter Include="Source">
       <UniqueIdentifier>{94804193-3947-43cc-b83b-ff99ce30a03b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="API\Topologies">
+      <UniqueIdentifier>{18ec8a6c-9caf-403b-b05a-f35720f495a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MeshProc\Mesh.h">
+      <Filter>API</Filter>
+    </ClInclude>
+    <ClInclude Include="HalfEdge.h">
+      <Filter>API\Topologies</Filter>
+    </ClInclude>
+    <ClInclude Include="TriEdge.h">
+      <Filter>API\Topologies</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="HalfEdge.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TriEdge.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

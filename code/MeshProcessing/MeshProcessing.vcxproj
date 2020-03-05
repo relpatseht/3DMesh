@@ -10,6 +10,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HalfEdge.h" />
+    <ClInclude Include="MeshProc\Mesh.h" />
+    <ClInclude Include="TriEdge.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HalfEdge.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="TriEdge.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{5CAE8025-4A75-43AF-B82A-9452D00DC90A}</ProjectGuid>
