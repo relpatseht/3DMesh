@@ -33,20 +33,23 @@ namespace mesh
 
 		struct Topology
 		{
-			std::vector<unsigned> vertEdges;
-			std::vector<Vert> verts;
+			std::vector<unsigned> vertHalfEdges; // Half edge pointer for each vert
+			std::vector<Vert> verts; // Vert list. Holds original and split id
 
-			std::vector<unsigned> faceEdges[FaceType::COUNT];
-			std::vector<unsigned> faces;
+			std::vector<unsigned> faceHalfEdges[FaceType::COUNT]; // First half edge pointer for each face
+			std::vector<unsigned> faces; // Face list. Holds input triangle index
 
-			std::vector<unsigned> halfEdgeVerts;
-			std::vector<FaceIndex> halfEdgeFaces;
-			std::vector<unsigned> halfEdgePairs;
-			std::vector<unsigned> halfEdgeNexts;
+			std::vector<unsigned> halfEdgeVerts; // Vert pointer for each half edge
+			std::vector<FaceIndex> halfEdgeFaces; // Face pointer for each half edge
+			std::vector<unsigned> halfEdgeNexts; // Next pointer for each half edge
+
+			// Note: halfEdge ^ 1 == pair
+			// Note: halfEdge / 2 == edge
+			// Note: edge * 2 == halfEdge
 		};
 
 
 		// Assumptions: manifold (singularities allowed), no two verts are identical, no lines (triangles with 2 identical points)
-		static bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
+		static void Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
 	};
 }
