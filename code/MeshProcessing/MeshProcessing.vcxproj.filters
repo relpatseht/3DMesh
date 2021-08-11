@@ -21,6 +21,12 @@
     <ClInclude Include="MeshProc\TriEdge.h">
       <Filter>API\Topologies</Filter>
     </ClInclude>
+    <ClInclude Include="BitSet.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="sanity.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Mesh.cpp">

@@ -4,7 +4,7 @@
 
 namespace mesh
 {
-	struct half_edge
+	namespace half_edge
 	{
 		union Vert
 		{
@@ -37,7 +37,6 @@ namespace mesh
 			std::vector<Vert> verts; // Vert list. Holds original and split id
 
 			std::vector<unsigned> faceHalfEdges[FaceType::COUNT]; // First half edge pointer for each face
-			std::vector<unsigned> faces; // Face list. Holds input triangle index
 
 			std::vector<unsigned> halfEdgeVerts; // Vert pointer for each half edge
 			std::vector<FaceIndex> halfEdgeFaces; // Face pointer for each half edge
@@ -50,6 +49,6 @@ namespace mesh
 
 
 		// Assumptions: manifold (singularities allowed), no two verts are identical, no lines (triangles with 2 identical points)
-		static void Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
+		static bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
 	};
 }

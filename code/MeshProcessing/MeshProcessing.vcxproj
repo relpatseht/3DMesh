@@ -11,9 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BitSet.h" />
     <ClInclude Include="MeshProc\HalfEdge.h" />
     <ClInclude Include="MeshProc\Mesh.h" />
     <ClInclude Include="MeshProc\TriEdge.h" />
+    <ClInclude Include="sanity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HalfEdge.cpp" />
