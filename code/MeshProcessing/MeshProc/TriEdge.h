@@ -4,7 +4,7 @@
 
 namespace mesh
 {
-	struct tri_edge
+	namespace tri_edge
 	{
 		union Vert
 		{
@@ -17,44 +17,40 @@ namespace mesh
 			uint32_t id;
 		};
 
-		enum TriangleType : uint32_t
+		union SharedEdge
 		{
-			REAL,
-			BOUNDARY,
-			FILLER,
-			COUNT
+			static const uint32_t NONE = ~0u;
+			static const uint32_t NO_TRIANGLE = (1u << 30) - 1;
+			static const uint32_t NO_EDGE = 0x3;
+
+			struct
+			{
+
+				uint32_t otherTriangle : 30;
+				uint32_t otherEdge : 2;
+			};
+
+			uint32_t id;
 		};
 
-		struct TriangleEdge
+		struct Triangle
 		{
-			uint32_t triangle : 28;
-			uint32_t edge : 2;
-			TriangleType type: 2;
+			unsigned verts[3];
 		};
 
-		struct TriVerts
+		struct TriangleNeighbors
 		{
-			static constexpr uint32_t NONE = ~0u;
-
-			uint32_t verts[3];
-		};
-
-		struct TriNeighbors
-		{
-			TriangleEdge edge[3];
+			SharedEdge edge[3];
 		};
 
 		struct Topology
 		{
-			std::vector<TriangleEdge> vertEdges;
 			std::vector<Vert> verts;
-
-			std::vector<TriNeighbors> triNeighbors[TriangleType::COUNT];
-			std::vector<TriVerts> triVerts[TriangleType::COUNT];
-			std::vector<unsigned> tris;
+			std::vector<TriangleNeighbors> triNeighbors;
+			std::vector<Triangle> tris;
 		};
 
-		// Assumptions: manifold (singularities allowed), no two verts are identical, no lines (triangles with 2 identical points)
-		static bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
+		// Assumptions: manifold (singularities allowed), no lines (triangles with 2 identical points)
+		bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
 	};
 }

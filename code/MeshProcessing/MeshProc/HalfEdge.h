@@ -21,14 +21,13 @@ namespace mesh
 		{
 			REAL,
 			BOUNDARY,
-			FILLER,
 			COUNT
 		};
 
 		struct FaceIndex
 		{
-			uint32_t index : 30;
-			FaceType type : 2;
+			uint32_t index : 31;
+			FaceType type : 1;
 		};
 
 		struct Topology
@@ -36,7 +35,7 @@ namespace mesh
 			std::vector<unsigned> vertHalfEdges; // Half edge pointer for each vert
 			std::vector<Vert> verts; // Vert list. Holds original and split id
 
-			std::vector<unsigned> faceHalfEdges[FaceType::COUNT]; // First half edge pointer for each face
+			std::vector<unsigned> faceHalfEdges[FaceType::COUNT]; // First half edge pointer for each face. Each boundary only has 1 face
 
 			std::vector<unsigned> halfEdgeVerts; // Vert pointer for each half edge
 			std::vector<FaceIndex> halfEdgeFaces; // Face pointer for each half edge
@@ -48,7 +47,7 @@ namespace mesh
 		};
 
 
-		// Assumptions: manifold (singularities allowed), no two verts are identical, no lines (triangles with 2 identical points)
-		static bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
+		// Assumptions: manifold (singularities allowed), no lines (triangles with 2 identical points)
+		bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh);
 	};
 }

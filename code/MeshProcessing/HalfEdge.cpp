@@ -55,7 +55,7 @@ namespace
 				return halfEdge;
 			}
 
-			static unsigned SplitBoundarySingularities(Topology* inoutMesh, BitSet* workBitSet, unsigned firstHalfEdge)
+			static void SplitBoundarySingularities(Topology* inoutMesh, BitSet* workBitSet, unsigned firstHalfEdge)
 			{
 				for (unsigned loopStartHE = NextSingularityStart(*inoutMesh, workBitSet, firstHalfEdge, firstHalfEdge); loopStartHE != firstHalfEdge; loopStartHE = NextSingularityStart(*inoutMesh, workBitSet, firstHalfEdge, loopStartHE))
 				{
@@ -109,11 +109,11 @@ namespace
 			}
 		}
 
-		static unsigned SplitSingularities(Topology* inoutMesh)
+		static void SplitSingularities(Topology* inoutMesh)
 		{
-			const size_t numVerts = inoutMesh->verts.size();
-			const size_t maxNewVerts = numVerts >> 2; // 25% verts created from splitting singularities should be unreasonably high
-			const size_t maxVerts = numVerts + maxNewVerts;
+			const unsigned numVerts = static_cast<unsigned>(inoutMesh->verts.size());
+			const unsigned maxNewVerts = numVerts >> 2; // 25% verts created from splitting singularities should be unreasonably high
+			const unsigned maxVerts = numVerts + maxNewVerts;
 			ScopedBitSet vertBitSet;
 
 			BitSet_Create(&vertBitSet, maxVerts);
@@ -125,20 +125,6 @@ namespace
 			}
 		}
 	}
-
-	namespace hole
-	{
-		namespace hole_internal
-		{
-
-		}
-
-		static void FillHoles(Topology* inoutMesh)
-		{
-ToDo: This.
-		}
-	}
-
 
 	namespace validate
 	{
@@ -243,186 +229,184 @@ ToDo: This.
 
 namespace mesh
 {
-	bool half_edge::Construct(const unsigned* indices, unsigned triCount, Topology* outMesh)
+	namespace half_edge
 	{
-		static constexpr unsigned HE_NONE = ~0u;
-		const unsigned realHalfEdgeCount = triCount * 6;
-		std::vector<unsigned> indexVertMap;
-		std::vector<unsigned> outVertHEs;
-		std::vector<Vert> outVerts;
-		std::vector<unsigned> outFaceHEs(triCount);
-		std::vector<unsigned> outHEVerts(realHalfEdgeCount);
-		std::vector<FaceIndex> outHEFaces(realHalfEdgeCount);
-		std::vector<unsigned> outHENexts(realHalfEdgeCount);
-		std::unordered_map<uint64_t, unsigned> halfEdgeMap;
-		auto FindAddVert = [&indexVertMap, &outVerts, &outVertHEs](unsigned vertIndex)
+		bool Construct(const unsigned* indices, unsigned triCount, Topology* outMesh)
 		{
-			if (vertIndex > indexVertMap.size())
-				indexVertMap.resize(vertIndex + 1, HE_NONE);
-
-			if (indexVertMap[vertIndex] == HE_NONE)
+			static constexpr unsigned HE_NONE = ~0u;
+			const unsigned realHalfEdgeCount = triCount * 6;
+			std::vector<unsigned> indexVertMap;
+			std::vector<unsigned> outVertHEs;
+			std::vector<Vert> outVerts;
+			std::vector<unsigned> outFaceHEs(triCount);
+			std::vector<unsigned> outHEVerts(realHalfEdgeCount);
+			std::vector<FaceIndex> outHEFaces(realHalfEdgeCount);
+			std::vector<unsigned> outHENexts(realHalfEdgeCount);
+			std::unordered_map<uint64_t, unsigned> halfEdgeMap;
+			auto FindAddVert = [&indexVertMap, &outVerts, &outVertHEs](unsigned vertIndex)
 			{
-				indexVertMap[vertIndex] = static_cast<unsigned>(outVerts.size());
-				outVerts.emplace_back(Vert{ {vertIndex, 0} });
-				outVertHEs.emplace_back(HE_NONE);
+				if (vertIndex > indexVertMap.size())
+					indexVertMap.resize(vertIndex + 1, HE_NONE);
 
-				assert(outVerts.back().realIndex == vertIndex && "Vert::realIndex overflow.");
-			}
-
-			return indexVertMap[vertIndex];
-		};
-
-		// Build real topology
-		for (unsigned triIndex = 0; triIndex < triCount; ++triIndex)
-		{
-			const unsigned* const triIndices = indices + triIndex * 3;
-			const unsigned verts[3] = { FindAddVert(triIndices[0]), FindAddVert(triIndices[1]), FindAddVert(triIndices[2]) };
-
-			sanity(!(triIndices[0] == triIndices[1] || triIndices[1] == triIndices[2] || triIndices[2] == triIndices[0]) && "Degenerate tri detected");
-
-			for (unsigned vertIndex = 0; vertIndex < 3; ++vertIndex)
-			{
-				const unsigned nextVertIndex = (vertIndex + 1) % 3;
-				const unsigned vertA = verts[vertIndex];
-				const unsigned vertB = verts[nextVertIndex];
-				const uint64_t edgeId = (static_cast<uint64_t>(vertA) << 32) | vertB;
-				auto edgeIt = halfEdgeMap.find(edgeId);
-
-				if (edgeIt == halfEdgeMap.end())
+				if (indexVertMap[vertIndex] == HE_NONE)
 				{
-					const uint64_t reverseEdge = (static_cast<uint64_t>(vertB) << 32) | vertA;
-					const unsigned newHalfEdge = static_cast<unsigned>(outHEVerts.size());
+					indexVertMap[vertIndex] = static_cast<unsigned>(outVerts.size());
+					outVerts.emplace_back(Vert{ {vertIndex, 0} });
+					outVertHEs.emplace_back(HE_NONE);
 
-					outHEVerts.resize(outHEVerts.size() + 2, HE_NONE);
-					outHEFaces.resize(outHEFaces.size() + 2, FaceIndex{ HE_NONE, FaceType::COUNT });
-					outHENexts.resize(outHENexts.size() + 2, HE_NONE);
-
-					sanity((newHalfEdge & 1) == 0);
-
-					halfEdgeMap.emplace(reverseEdge, newHalfEdge + 1);
-					edgeIt = halfEdgeMap.emplace(edgeId, newHalfEdge).first;
-				}
-				else
-				{
-					sanity((edgeIt->second & 1) == 1 && "Non-manifold edge detected");
+					assert(outVerts.back().realIndex == vertIndex && "Vert::realIndex overflow.");
 				}
 
-				const unsigned halfEdge = edgeIt->second;
+				return indexVertMap[vertIndex];
+			};
 
-				sanity(outHEVerts[halfEdge] == HE_NONE && "Non-manifold edge detected");
-				sanity(outHEFaces[halfEdge].type == FaceType::COUNT && "Non-manifold edge detected");
-
-				outHEVerts[halfEdge] = vertA;
-				outHEFaces[halfEdge].index = triIndex;
-				outHEFaces[halfEdge].type = FaceType::REAL;
-				sanity(outHEFaces[halfEdge].index == triIndex && "FaceIndex::index overflow");
-
-				outVertHEs[vertA] = halfEdge;
-			}
-
-			unsigned prevVert = verts[2];
-			unsigned prevVertHE = outVertHEs[prevVert];
-			for (unsigned vertIndex = 0; vertIndex < 3; ++vertIndex)
+			// Build real topology
+			for (unsigned triIndex = 0; triIndex < triCount; ++triIndex)
 			{
-				const unsigned curVert = verts[vertIndex];
-				const unsigned curVertHE = outVertHEs[curVert];
+				const unsigned* const triIndices = indices + triIndex * 3;
+				const unsigned verts[3] = { FindAddVert(triIndices[0]), FindAddVert(triIndices[1]), FindAddVert(triIndices[2]) };
 
-				outHENexts[prevVertHE] = curVertHE;
+				sanity(!(triIndices[0] == triIndices[1] || triIndices[1] == triIndices[2] || triIndices[2] == triIndices[0]) && "Degenerate tri detected");
 
-				sanity(outHENexts[prevVertHE] == HE_NONE && "Non-manifold edge detected");
-
-				prevVert = curVert;
-				prevVertHE = curVertHE;
-			}
-
-			outFaceHEs[triIndex] = prevVertHE;
-		}
-
-		sanity(outHEFaces.size() == outHENexts.size() && outHEFaces.size() == outHEVerts.size());
-
-		// Add imaginary boundary faces
-		std::vector<unsigned> outBoundaryHEs;
-		for (size_t heIndex = 0; heIndex < outHENexts.size(); ++heIndex)
-		{
-			if (outHENexts[heIndex] == HE_NONE)
-			{
-				const unsigned boundaryIndex = static_cast<unsigned>(outBoundaryHEs.size());
-				const FaceIndex boundaryFace{ boundaryIndex, FaceType::BOUNDARY };
-				unsigned boundaryHEIndex = heIndex;
-				unsigned boundaryLoopLen = 0;
-
-				outBoundaryHEs.emplace_back(boundaryHEIndex);
-
-				// Create the new face by walking around the unpaired edges
-				do
+				for (unsigned vertIndex = 0; vertIndex < 3; ++vertIndex)
 				{
-					const unsigned boundaryHEFlipIndex = boundaryHEIndex ^ 1;
-					unsigned boundaryNextIndex = outHENexts[boundaryHEFlipIndex] ^ 1;
+					const unsigned nextVertIndex = (vertIndex + 1) % 3;
+					const unsigned vertA = verts[vertIndex];
+					const unsigned vertB = verts[nextVertIndex];
+					const uint64_t edgeId = (static_cast<uint64_t>(vertA) << 32) | vertB;
+					auto edgeIt = halfEdgeMap.find(edgeId);
 
-					// Find next unpaired edge
-					while (outHENexts[boundaryNextIndex] != HE_NONE)
-						boundaryNextIndex = outHENexts[boundaryNextIndex] ^ 1;
+					if (edgeIt == halfEdgeMap.end())
+					{
+						const uint64_t reverseEdge = (static_cast<uint64_t>(vertB) << 32) | vertA;
+						const unsigned newHalfEdge = static_cast<unsigned>(outHEVerts.size());
 
-					++boundaryLoopLen;
+						outHEVerts.resize(outHEVerts.size() + 2, HE_NONE);
+						outHEFaces.resize(outHEFaces.size() + 2, FaceIndex{ HE_NONE, FaceType::COUNT });
+						outHENexts.resize(outHENexts.size() + 2, HE_NONE);
 
-					outHEFaces[boundaryHEIndex] = boundaryFace;
-					outHEVerts[boundaryHEIndex] = outHEVerts[boundaryHEFlipIndex];
-					outHENexts[boundaryNextIndex] = boundaryHEIndex; // reverse order for boundary face
-				} while (boundaryHEIndex != heIndex);
+						sanity((newHalfEdge & 1) == 0);
 
-				sanity(boundaryLoopLen >= 3 && "Overlapping faces");
+						halfEdgeMap.emplace(reverseEdge, newHalfEdge + 1);
+						edgeIt = halfEdgeMap.emplace(edgeId, newHalfEdge).first;
+					}
+					else
+					{
+						sanity((edgeIt->second & 1) == 1 && "Non-manifold edge detected");
+					}
+
+					const unsigned halfEdge = edgeIt->second;
+
+					sanity(outHEVerts[halfEdge] == HE_NONE && "Non-manifold edge detected");
+					sanity(outHEFaces[halfEdge].type == FaceType::COUNT && "Non-manifold edge detected");
+
+					outHEVerts[halfEdge] = vertA;
+					outHEFaces[halfEdge].index = triIndex;
+					outHEFaces[halfEdge].type = FaceType::REAL;
+					sanity(outHEFaces[halfEdge].index == triIndex && "FaceIndex::index overflow");
+
+					outVertHEs[vertA] = halfEdge;
+				}
+
+				unsigned prevVert = verts[2];
+				unsigned prevVertHE = outVertHEs[prevVert];
+				for (unsigned vertIndex = 0; vertIndex < 3; ++vertIndex)
+				{
+					const unsigned curVert = verts[vertIndex];
+					const unsigned curVertHE = outVertHEs[curVert];
+
+					outHENexts[prevVertHE] = curVertHE;
+
+					sanity(outHENexts[prevVertHE] == HE_NONE && "Non-manifold edge detected");
+
+					prevVert = curVert;
+					prevVertHE = curVertHE;
+				}
+
+				outFaceHEs[triIndex] = prevVertHE;
 			}
-		}
 
-		sanity(outHEFaces.size() == outHENexts.size() && outHEFaces.size() == outHEVerts.size());
+			sanity(outHEFaces.size() == outHENexts.size() && outHEFaces.size() == outHEVerts.size());
 
-		for (unsigned halfEdge : outVertHEs)
-			sanity(halfEdge < outHENexts.size());
-
-		for (unsigned halfEdge : outFaceHEs)
-			sanity(halfEdge < outHENexts.size());
-
-		for (unsigned halfEdge : outBoundaryHEs)
-			sanity(halfEdge < outHENexts.size());
-
-		for(unsigned vertIndex : outHEVerts)
-			sanity(vertIndex < outVerts.size());
-
-		for (unsigned halfEdge : outHENexts)
-			sanity(halfEdge < outHENexts.size());
-
-		for (FaceIndex faceIndex : outHEFaces)
-		{
-			switch (faceIndex.type)
+			// Add imaginary boundary faces
+			std::vector<unsigned> outBoundaryHEs;
+			for (size_t heIndex = 0; heIndex < outHENexts.size(); ++heIndex)
 			{
-			case FaceType::REAL:
-				sanity(faceIndex.index < outFaceHEs.size());
-				break;
-			case FaceType::BOUNDARY:
-				sanity(faceIndex.index < outBoundaryHEs.size());
-				break;
-			default:
-				sanity(0 && "Unreachable");
+				if (outHENexts[heIndex] == HE_NONE)
+				{
+					const unsigned boundaryIndex = static_cast<unsigned>(outBoundaryHEs.size());
+					const FaceIndex boundaryFace{ boundaryIndex, FaceType::BOUNDARY };
+					unsigned boundaryHEIndex = static_cast<unsigned>(heIndex);
+					unsigned boundaryLoopLen = 0;
+
+					outBoundaryHEs.emplace_back(boundaryHEIndex);
+
+					// Create the new face by walking around the unpaired edges
+					do
+					{
+						const unsigned boundaryHEFlipIndex = boundaryHEIndex ^ 1;
+						unsigned boundaryNextIndex = outHENexts[boundaryHEFlipIndex] ^ 1;
+
+						// Find next unpaired edge
+						while (outHENexts[boundaryNextIndex] != HE_NONE)
+							boundaryNextIndex = outHENexts[boundaryNextIndex] ^ 1;
+
+						++boundaryLoopLen;
+
+						outHEFaces[boundaryHEIndex] = boundaryFace;
+						outHEVerts[boundaryHEIndex] = outHEVerts[boundaryHEFlipIndex];
+						outHENexts[boundaryNextIndex] = boundaryHEIndex; // reverse order for boundary face
+					} while (boundaryHEIndex != heIndex);
+
+					sanity(boundaryLoopLen >= 3 && "Overlapping faces");
+				}
 			}
+
+			sanity(outHEFaces.size() == outHENexts.size() && outHEFaces.size() == outHEVerts.size());
+
+			for (unsigned halfEdge : outVertHEs)
+				sanity(halfEdge < outHENexts.size());
+
+			for (unsigned halfEdge : outFaceHEs)
+				sanity(halfEdge < outHENexts.size());
+
+			for (unsigned halfEdge : outBoundaryHEs)
+				sanity(halfEdge < outHENexts.size());
+
+			for (unsigned vertIndex : outHEVerts)
+				sanity(vertIndex < outVerts.size());
+
+			for (unsigned halfEdge : outHENexts)
+				sanity(halfEdge < outHENexts.size());
+
+			for (FaceIndex faceIndex : outHEFaces)
+			{
+				switch (faceIndex.type)
+				{
+				case FaceType::REAL:
+					sanity(faceIndex.index < outFaceHEs.size());
+					break;
+				case FaceType::BOUNDARY:
+					sanity(faceIndex.index < outBoundaryHEs.size());
+					break;
+				default:
+					sanity(0 && "Unreachable");
+				}
+			}
+
+			outMesh->vertHalfEdges = std::move(outVertHEs);
+			outMesh->verts = std::move(outVerts);
+
+			outMesh->faceHalfEdges[FaceType::REAL] = std::move(outFaceHEs);
+			outMesh->faceHalfEdges[FaceType::BOUNDARY] = std::move(outBoundaryHEs);
+
+			outMesh->halfEdgeVerts = std::move(outHEVerts);
+			outMesh->halfEdgeFaces = std::move(outHEFaces);
+			outMesh->halfEdgeNexts = std::move(outHENexts);
+
+			singularity::SplitSingularities(outMesh);
+
+			return validate::ValidateMesh(*outMesh);
 		}
-
-		outMesh->vertHalfEdges = std::move(outVertHEs);
-		outMesh->verts = std::move(outVerts);
-
-		outMesh->faceHalfEdges[FaceType::REAL] = std::move(outFaceHEs);
-		outMesh->faceHalfEdges[FaceType::BOUNDARY] = std::move(outBoundaryHEs);
-
-		outMesh->halfEdgeVerts = std::move(outHEVerts);
-		outMesh->halfEdgeFaces = std::move(outHEFaces);
-		outMesh->halfEdgeNexts = std::move(outHENexts);
-
-		singularity::SplitSingularities(outMesh);
-
-		if (!validate::ValidateMesh(*outMesh))
-			return false;
-
-		hole::FillHoles(outMesh);
-
-		return validate::ValidateVertices(*outMesh);
 	}
 }

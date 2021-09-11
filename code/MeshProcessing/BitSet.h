@@ -16,7 +16,7 @@ struct BitSet
 	{																		 \
 		const unsigned qwordCount = ((Count)+63) >> 6;						 \
 		(SetPtr)->bits = (uint64_t*)_malloca(sizeof(uint64_t) * qwordCount); \
-		(SetPtr)->bitCount = (unsigned)Count;								 \
+		(SetPtr)->bitCount = Count;								             \
 		(SetPtr)->qwordCount = qwordCount;                                   \
 	}
 
